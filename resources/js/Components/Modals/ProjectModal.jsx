@@ -9,6 +9,7 @@ export default function ProjectModal({ isOpen, onClose, activeWorkspace }) {
     const { data, setData, post, processing, errors, reset } = useForm({
         name: '',
         description: '',
+        is_private: false,
     });
 
     const handleSubmit = (e) => {
@@ -61,6 +62,22 @@ export default function ProjectModal({ isOpen, onClose, activeWorkspace }) {
                             className="mt-1.5 w-full h-20 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3 py-2 text-sm text-zinc-850 dark:text-zinc-100 outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 resize-none"
                         />
                         {errors.description && <span className="text-xs text-red-500 mt-1 block">{errors.description}</span>}
+                    </div>
+
+                    <div>
+                        <label className="flex items-center gap-3 cursor-pointer p-3 rounded-lg border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-900 transition-colors">
+                            <input 
+                                type="checkbox"
+                                checked={data.is_private}
+                                onChange={(e) => setData('is_private', e.target.checked)}
+                                className="w-4 h-4 text-indigo-600 rounded border-zinc-300 focus:ring-indigo-600"
+                            />
+                            <div>
+                                <span className="block text-sm font-bold text-zinc-900 dark:text-zinc-100">Private Project</span>
+                                <span className="block text-[10px] text-zinc-500 dark:text-zinc-400 mt-0.5">Only you can view and access this project dashboard.</span>
+                            </div>
+                        </label>
+                        {errors.is_private && <span className="text-xs text-red-500 mt-1 block">{errors.is_private}</span>}
                     </div>
 
                     <div className="flex justify-end gap-3 mt-6">

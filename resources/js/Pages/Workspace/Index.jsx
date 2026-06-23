@@ -6,6 +6,7 @@ export default function WorkspaceIndex({ workspaces, auth }) {
     const { data, setData, post, processing, errors } = useForm({
         name: '',
         slug: '',
+        type: 'software',
     });
 
     const handleSubmit = (e) => {
@@ -29,7 +30,7 @@ export default function WorkspaceIndex({ workspaces, auth }) {
                     <div className="space-y-2">
                         <h1 className="text-3xl font-black tracking-tight text-zinc-950">Setup your Workspace</h1>
                         <p className="text-sm text-zinc-500 leading-relaxed">
-                            SatSet is a hybrid kanban project tracker and document tool. Select an existing workspace or configure a new space for your team.
+                             SatSet is a hybrid kanban project tracker and document tool. Select an existing workspace or configure a new space for your team.
                         </p>
                     </div>
 
@@ -101,6 +102,46 @@ export default function WorkspaceIndex({ workspaces, auth }) {
                                 />
                             </div>
                             {errors.slug && <span className="text-xs text-red-500 mt-1">{errors.slug}</span>}
+                        </div>
+
+                        <div>
+                            <label className="block text-xs font-bold text-zinc-500 uppercase">Tipe Workspace</label>
+                            <div className="grid grid-cols-2 gap-3 mt-1.5">
+                                <label className={`flex flex-col p-3 rounded-lg border-2 cursor-pointer transition-all ${
+                                    data.type === 'software' 
+                                        ? 'border-indigo-600 bg-indigo-50/15' 
+                                        : 'border-zinc-200 hover:border-zinc-300 bg-white'
+                                }`}>
+                                    <input 
+                                        type="radio" 
+                                        name="type" 
+                                        value="software" 
+                                        checked={data.type === 'software'} 
+                                        onChange={(e) => setData('type', e.target.value)}
+                                        className="sr-only" 
+                                    />
+                                    <span className="text-xs font-bold text-zinc-900">💻 Software Dev</span>
+                                    <span className="text-[10px] text-zinc-400 mt-1 leading-normal">5 Status: Baru, Rencana, Kerja, Testing, Selesai.</span>
+                                </label>
+                                
+                                <label className={`flex flex-col p-3 rounded-lg border-2 cursor-pointer transition-all ${
+                                    data.type === 'casual' 
+                                        ? 'border-indigo-600 bg-indigo-50/15' 
+                                        : 'border-zinc-200 hover:border-zinc-300 bg-white'
+                                }`}>
+                                    <input 
+                                        type="radio" 
+                                        name="type" 
+                                        value="casual" 
+                                        checked={data.type === 'casual'} 
+                                        onChange={(e) => setData('type', e.target.value)}
+                                        className="sr-only" 
+                                    />
+                                    <span className="text-xs font-bold text-zinc-900">📝 Casual Work</span>
+                                    <span className="text-[10px] text-zinc-400 mt-1 leading-normal">3 Status: Rencana, Dikerjakan, Selesai. Cocok untuk log harian.</span>
+                                </label>
+                            </div>
+                            {errors.type && <span className="text-xs text-red-500 mt-1 block">{errors.type}</span>}
                         </div>
 
                         <button 

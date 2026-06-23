@@ -16,6 +16,7 @@ class StoreWorkspaceRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'max:255'],
             'slug' => ['required', 'string', 'max:255', 'unique:workspaces,slug', 'alpha_dash'],
+            'type' => ['required', 'string', 'in:software,casual'],
         ];
     }
 }

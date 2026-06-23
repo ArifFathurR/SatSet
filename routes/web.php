@@ -48,6 +48,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         // Project routes
         Route::post('/projects', [ProjectController::class, 'store'])->name('projects.store');
         Route::get('/projects/{project}', [ProjectController::class, 'show'])->name('projects.show');
+        Route::patch('/projects/{project}', [ProjectController::class, 'update'])->name('projects.update');
 
         // Task routes
         Route::post('/projects/{project}/tasks', [TaskController::class, 'store'])->name('tasks.store');

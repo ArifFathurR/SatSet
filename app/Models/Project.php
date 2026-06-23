@@ -17,6 +17,14 @@ class Project extends Model
         'workspace_id',
         'name',
         'description',
+        'custom_columns',
+        'is_private',
+        'owner_id',
+    ];
+
+    protected $casts = [
+        'is_private' => 'boolean',
+        'custom_columns' => 'array',
     ];
 
     protected static function boot()
@@ -37,5 +45,10 @@ class Project extends Model
     public function tasks()
     {
         return $this->hasMany(Task::class)->orderBy('position');
+    }
+
+    public function owner()
+    {
+        return $this->belongsTo(User::class, 'owner_id');
     }
 }

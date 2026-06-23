@@ -71,7 +71,7 @@ export default function Welcome({ auth }) {
         { id: 'features', label: 'Fitur Utama' },
         { id: 'preview', label: 'Preview' },
         { id: 'advantages', label: 'Keunggulan' },
-        { id: 'testimonials', label: 'Testimoni' }
+        { id: 'testimonials', label: 'Cara Pakai' }
     ];
 
     return (
@@ -262,7 +262,7 @@ export default function Welcome({ auth }) {
                     <div className="relative overflow-hidden rounded-b-lg border border-zinc-100 bg-zinc-50">
                         <img 
                             id="screenshot-preview-img"
-                            src="/screenshot_kanban.png" 
+                            src="/image.png" 
                             alt="SatSet Kanban Board Preview" 
                             className="w-full object-cover max-h-[500px]"
                             onError={(e) => {
@@ -458,54 +458,195 @@ export default function Welcome({ auth }) {
                 </div>
             </section>
 
-            {/* 6. TESTIMONIALS SECTION */}
+            {/* 6. HOW IT WORKS SECTION */}
             <section id="testimonials" className="bg-white border-t border-zinc-150/80 py-24 scroll-mt-20">
                 <div className="mx-auto max-w-6xl px-6">
                     <div className="reveal text-center max-w-2xl mx-auto space-y-3 mb-16">
-                        <div className="text-xs font-bold text-indigo-600 uppercase tracking-wider">Testimoni Pengguna</div>
+                        <div className="text-xs font-bold text-indigo-600 uppercase tracking-wider">Cara Penggunaan</div>
                         <h2 className="text-2xl font-black text-zinc-950 tracking-tight sm:text-3xl">
-                            Dicintai oleh Tim Developer Lokal
+                            Mulai dalam 4 Langkah Mudah
                         </h2>
+                        <p className="text-xs sm:text-sm text-zinc-500 leading-relaxed font-medium">
+                            Dari daftar akun hingga kolaborasi tim — SatSet dirancang agar Anda bisa produktif dalam hitungan menit.
+                        </p>
                     </div>
 
-                    <div className="grid md:grid-cols-3 gap-6">
-                        {[
-                            {
-                                name: 'Aris Setiawan',
-                                handle: '@aris_setiawan',
-                                role: 'Lead Developer, Agensi Digital',
-                                text: 'Menggunakan SatSet sangat menghemat waktu tim kami. Kami tidak perlu lagi berpindah-pindah tab antara Notion untuk dokumentasi teknis dan Jira untuk status tugas. Semua ada di satu kartu Kanban!'
-                            },
-                            {
-                                name: 'Bambang Pratama',
-                                handle: '@bambangpratama',
-                                role: 'Software Engineer & Freelancer',
-                                text: 'Desain minimalis dan performa SPA-nya luar biasa cepat. Sebagai freelancer yang mengelola beberapa klien, isolasi workspace di SatSet membuat pengelolaan proyek klien teratur dan aman.'
-                            },
-                            {
-                                name: 'Citra Kirana',
-                                handle: '@citra_dev',
-                                role: 'Product Manager, Startup Tech',
-                                text: 'Tiptap integration di SatSet benar-benar game-changer. Diskusi spek detail dan coretan script terdokumentasi rapi di dalam kartu tugas. Sangat direkomendasikan bagi tim kecil yang gesit.'
-                            }
-                        ].map((testimonial, idx) => (
-                            <div 
-                                key={idx} 
-                                className="reveal border border-zinc-200/80 rounded-2xl p-6 shadow-sm flex flex-col justify-between hover:border-zinc-300 transition-all bg-slate-50/40"
-                                style={{ transitionDelay: `${idx * 150}ms` }}
-                            >
-                                <p className="text-xs text-zinc-500 leading-relaxed italic font-medium">"{testimonial.text}"</p>
-                                <div className="flex items-center gap-3 mt-6 pt-4 border-t border-zinc-100">
-                                    <div className="h-8 w-8 rounded-full bg-indigo-50 border border-indigo-150 text-[10px] font-bold flex items-center justify-center text-indigo-700 uppercase">
-                                        {testimonial.name.split(' ').map(n => n[0]).join('')}
+                    {/* Steps */}
+                    <div className="space-y-20">
+
+                        {/* STEP 1 */}
+                        <div className="reveal grid md:grid-cols-2 gap-10 items-center">
+                            <div className="space-y-4">
+                                <div className="inline-flex items-center gap-2.5">
+                                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-indigo-600 text-white text-sm font-black shadow-md shadow-indigo-500/20">
+                                        1
                                     </div>
-                                    <div>
-                                        <div className="text-xs font-bold text-zinc-950 leading-tight">{testimonial.name}</div>
-                                        <div className="text-[9px] text-zinc-400 font-bold">{testimonial.role}</div>
-                                    </div>
+                                    <div className="h-[2px] w-10 bg-indigo-100 rounded-full" />
+                                </div>
+                                <h3 className="text-xl font-black text-zinc-950 tracking-tight">
+                                    Buat Workspace & Pilih Tipe
+                                </h3>
+                                <p className="text-sm text-zinc-500 leading-relaxed font-medium">
+                                    Setelah mendaftar, Anda langsung membuat <strong className="text-zinc-800 font-bold">Workspace</strong> pertama. Pilih tipe <strong className="text-indigo-600 font-bold">Software Dev</strong> untuk alur 5 kolom Kanban (Baru → Rencana → Dikerjakan → Testing → Selesai), atau tipe <strong className="text-emerald-600 font-bold">Casual Work</strong> untuk alur sederhana 3 kolom seperti catatan harian.
+                                </p>
+                                <div className="flex flex-wrap gap-2 pt-1">
+                                    <span className="inline-flex items-center gap-1.5 text-[10px] font-bold text-indigo-700 bg-indigo-50 border border-indigo-100 px-2.5 py-1 rounded-full">💻 Software Dev – 5 Status</span>
+                                    <span className="inline-flex items-center gap-1.5 text-[10px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-100 px-2.5 py-1 rounded-full">📝 Casual – 3 Status</span>
                                 </div>
                             </div>
-                        ))}
+                            <div className="reveal reveal-delay-100 relative rounded-xl overflow-hidden border border-zinc-200/80 shadow-xl shadow-zinc-200/40 bg-white">
+                                <div className="flex items-center gap-1.5 px-3 py-2.5 border-b border-zinc-100 bg-zinc-50">
+                                    <div className="h-2 w-2 rounded-full bg-rose-400" />
+                                    <div className="h-2 w-2 rounded-full bg-amber-400" />
+                                    <div className="h-2 w-2 rounded-full bg-emerald-400" />
+                                    <span className="ml-2 text-[9px] text-zinc-400 font-bold">satset.app/workspaces</span>
+                                </div>
+                                <img
+                                    src="/howto_step1_workspace.png"
+                                    alt="Langkah 1: Buat Workspace dan pilih tipe"
+                                    className="w-full object-cover object-top"
+                                    style={{ maxHeight: '340px' }}
+                                />
+                            </div>
+                        </div>
+
+                        {/* Connector */}
+                        <div className="flex justify-center">
+                            <div className="flex flex-col items-center gap-1">
+                                <div className="h-6 w-[2px] bg-zinc-100 rounded-full" />
+                                <div className="h-6 w-[2px] bg-zinc-200 rounded-full" />
+                                <div className="h-6 w-[2px] bg-zinc-100 rounded-full" />
+                            </div>
+                        </div>
+
+                        {/* STEP 2 */}
+                        <div className="reveal grid md:grid-cols-2 gap-10 items-center">
+                            <div className="order-2 md:order-1 relative rounded-xl overflow-hidden border border-zinc-200/80 shadow-xl shadow-zinc-200/40 bg-white">
+                                <div className="flex items-center gap-1.5 px-3 py-2.5 border-b border-zinc-100 bg-zinc-50">
+                                    <div className="h-2 w-2 rounded-full bg-rose-400" />
+                                    <div className="h-2 w-2 rounded-full bg-amber-400" />
+                                    <div className="h-2 w-2 rounded-full bg-emerald-400" />
+                                    <span className="ml-2 text-[9px] text-zinc-400 font-bold">satset.app/w/my-project</span>
+                                </div>
+                                <img
+                                    src="/howto_step2_kanban.png"
+                                    alt="Langkah 2: Kelola tugas di papan Kanban"
+                                    className="w-full object-cover object-top"
+                                    style={{ maxHeight: '340px' }}
+                                />
+                            </div>
+                            <div className="order-1 md:order-2 space-y-4">
+                                <div className="inline-flex items-center gap-2.5">
+                                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-indigo-600 text-white text-sm font-black shadow-md shadow-indigo-500/20">
+                                        2
+                                    </div>
+                                    <div className="h-[2px] w-10 bg-indigo-100 rounded-full" />
+                                </div>
+                                <h3 className="text-xl font-black text-zinc-950 tracking-tight">
+                                    Buat Proyek & Atur Papan Kanban
+                                </h3>
+                                <p className="text-sm text-zinc-500 leading-relaxed font-medium">
+                                    Dalam workspace, tambahkan <strong className="text-zinc-800 font-bold">Proyek</strong> sesuai kebutuhan. Setiap proyek memiliki papan Kanban interaktif sendiri. Gunakan fitur <strong className="text-indigo-600 font-bold">Board Settings</strong> untuk mengubah nama kolom, menambah kolom baru, atau mengatur warnanya — semuanya bisa dikustomisasi bebas.
+                                </p>
+                                <div className="flex flex-wrap gap-2 pt-1">
+                                    <span className="inline-flex items-center gap-1.5 text-[10px] font-bold text-zinc-700 bg-zinc-100 border border-zinc-200 px-2.5 py-1 rounded-full">🔒 Proyek Privat</span>
+                                    <span className="inline-flex items-center gap-1.5 text-[10px] font-bold text-zinc-700 bg-zinc-100 border border-zinc-200 px-2.5 py-1 rounded-full">🎨 Kolom Kustom</span>
+                                    <span className="inline-flex items-center gap-1.5 text-[10px] font-bold text-zinc-700 bg-zinc-100 border border-zinc-200 px-2.5 py-1 rounded-full">📊 Tampilan Board / Table / List</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Connector */}
+                        <div className="flex justify-center">
+                            <div className="flex flex-col items-center gap-1">
+                                <div className="h-6 w-[2px] bg-zinc-100 rounded-full" />
+                                <div className="h-6 w-[2px] bg-zinc-200 rounded-full" />
+                                <div className="h-6 w-[2px] bg-zinc-100 rounded-full" />
+                            </div>
+                        </div>
+
+                        {/* STEP 3 */}
+                        <div className="reveal grid md:grid-cols-2 gap-10 items-center">
+                            <div className="space-y-4">
+                                <div className="inline-flex items-center gap-2.5">
+                                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-indigo-600 text-white text-sm font-black shadow-md shadow-indigo-500/20">
+                                        3
+                                    </div>
+                                    <div className="h-[2px] w-10 bg-indigo-100 rounded-full" />
+                                </div>
+                                <h3 className="text-xl font-black text-zinc-950 tracking-tight">
+                                    Tambah Tugas dengan Dokumen Rich-Text
+                                </h3>
+                                <p className="text-sm text-zinc-500 leading-relaxed font-medium">
+                                    Klik <strong className="text-indigo-600 font-bold">+ Add New Request</strong> di kolom manapun untuk membuka modal tugas. Di sini Anda bisa mengisi judul, status, prioritas, assignee, dan tenggat waktu — lalu menulis dokumentasi detail menggunakan editor <strong className="text-zinc-800 font-bold">Tiptap WYSIWYG</strong> yang mendukung format teks kaya, code block, dan heading.
+                                </p>
+                                <div className="flex flex-wrap gap-2 pt-1">
+                                    <span className="inline-flex items-center gap-1.5 text-[10px] font-bold text-indigo-700 bg-indigo-50 border border-indigo-100 px-2.5 py-1 rounded-full">✍️ Editor Tiptap WYSIWYG</span>
+                                    <span className="inline-flex items-center gap-1.5 text-[10px] font-bold text-indigo-700 bg-indigo-50 border border-indigo-100 px-2.5 py-1 rounded-full">💬 Komentar Tugas</span>
+                                </div>
+                            </div>
+                            <div className="reveal reveal-delay-100 relative rounded-xl overflow-hidden border border-zinc-200/80 shadow-xl shadow-zinc-200/40 bg-white">
+                                <div className="flex items-center gap-1.5 px-3 py-2.5 border-b border-zinc-100 bg-zinc-50">
+                                    <div className="h-2 w-2 rounded-full bg-rose-400" />
+                                    <div className="h-2 w-2 rounded-full bg-amber-400" />
+                                    <div className="h-2 w-2 rounded-full bg-emerald-400" />
+                                    <span className="ml-2 text-[9px] text-zinc-400 font-bold">satset.app/w/my-project — Add Request</span>
+                                </div>
+                                <img
+                                    src="/howto_step3_task.png"
+                                    alt="Langkah 3: Tulis dokumen detail di dalam kartu tugas"
+                                    className="w-full object-cover object-top"
+                                    style={{ maxHeight: '340px' }}
+                                />
+                            </div>
+                        </div>
+
+                        {/* Connector */}
+                        <div className="flex justify-center">
+                            <div className="flex flex-col items-center gap-1">
+                                <div className="h-6 w-[2px] bg-zinc-100 rounded-full" />
+                                <div className="h-6 w-[2px] bg-zinc-200 rounded-full" />
+                                <div className="h-6 w-[2px] bg-zinc-100 rounded-full" />
+                            </div>
+                        </div>
+
+                        {/* STEP 4 */}
+                        <div className="reveal grid md:grid-cols-2 gap-10 items-center">
+                            <div className="order-2 md:order-1 relative rounded-xl overflow-hidden border border-zinc-200/80 shadow-xl shadow-zinc-200/40 bg-white">
+                                <div className="flex items-center gap-1.5 px-3 py-2.5 border-b border-zinc-100 bg-zinc-50">
+                                    <div className="h-2 w-2 rounded-full bg-rose-400" />
+                                    <div className="h-2 w-2 rounded-full bg-amber-400" />
+                                    <div className="h-2 w-2 rounded-full bg-emerald-400" />
+                                    <span className="ml-2 text-[9px] text-zinc-400 font-bold">satset.app/w/my-project — Board Settings</span>
+                                </div>
+                                <img
+                                    src="/howto_step4_settings.png"
+                                    alt="Langkah 4: Sesuaikan kolom board sesuai alur kerja tim"
+                                    className="w-full object-cover object-top"
+                                    style={{ maxHeight: '340px' }}
+                                />
+                            </div>
+                            <div className="order-1 md:order-2 space-y-4">
+                                <div className="inline-flex items-center gap-2.5">
+                                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-emerald-600 text-white text-sm font-black shadow-md shadow-emerald-500/20">
+                                        4
+                                    </div>
+                                    <div className="h-[2px] w-10 bg-emerald-100 rounded-full" />
+                                </div>
+                                <h3 className="text-xl font-black text-zinc-950 tracking-tight">
+                                    Sesuaikan Alur Kerja & Kolaborasi Tim
+                                </h3>
+                                <p className="text-sm text-zinc-500 leading-relaxed font-medium">
+                                    Sesuaikan papan Kanban sepenuhnya dengan fitur <strong className="text-zinc-800 font-bold">Board Settings</strong> — tambah kolom, ubah nama, atur warna, dan susun urutan kolom sesuai alur tim Anda. Undang anggota tim ke workspace dengan peran berbeda (Owner, Admin, Member), serta lacak perkembangan proyek secara real-time.
+                                </p>
+                                <div className="flex flex-wrap gap-2 pt-1">
+                                    <span className="inline-flex items-center gap-1.5 text-[10px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-100 px-2.5 py-1 rounded-full">👥 Undang Anggota Tim</span>
+                                    <span className="inline-flex items-center gap-1.5 text-[10px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-100 px-2.5 py-1 rounded-full">🎯 Kolom 100% Kustom</span>
+                                    <span className="inline-flex items-center gap-1.5 text-[10px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-100 px-2.5 py-1 rounded-full">📈 Laporan Progress</span>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </section>
@@ -555,7 +696,7 @@ export default function Welcome({ auth }) {
                 <div className="flex gap-6">
                     <a href="#features" onClick={(e) => handleScrollTo(e, 'features')} className="hover:text-zinc-650 transition-colors">Fitur</a>
                     <a href="#advantages" onClick={(e) => handleScrollTo(e, 'advantages')} className="hover:text-zinc-650 transition-colors">Keunggulan</a>
-                    <a href="#testimonials" onClick={(e) => handleScrollTo(e, 'testimonials')} className="hover:text-zinc-650 transition-colors">Testimoni</a>
+                    <a href="#testimonials" onClick={(e) => handleScrollTo(e, 'testimonials')} className="hover:text-zinc-650 transition-colors">Cara Pakai</a>
                 </div>
             </footer>
         </div>

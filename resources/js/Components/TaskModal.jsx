@@ -8,7 +8,7 @@ import {
 } from 'lucide-react';
 import Swal from 'sweetalert2';
 
-export default function TaskModal({ isOpen, onClose, task, projectId, workspaceSlug, workspaceMembers, defaultStatus }) {
+export default function TaskModal({ isOpen, onClose, task, projectId, workspaceSlug, workspaceMembers, defaultStatus, activeColumns }) {
     const isEditing = !!task;
     const { auth } = usePage().props;
     const [newComment, setNewComment] = useState('');
@@ -382,11 +382,9 @@ export default function TaskModal({ isOpen, onClose, task, projectId, workspaceS
                                     onChange={(e) => setData('status', e.target.value)}
                                     className="w-full rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3 py-2 text-xs font-semibold text-zinc-700 dark:text-zinc-300 shadow-sm focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
                                 >
-                                    <option value="backlog">Baru</option>
-                                    <option value="todo">Rencana</option>
-                                    <option value="progress">Dikerjakan</option>
-                                    <option value="review">Testing</option>
-                                    <option value="done">Selesai</option>
+                                    {activeColumns.map(col => (
+                                        <option key={col.id} value={col.id}>{col.name}</option>
+                                    ))}
                                 </select>
                             </div>
 

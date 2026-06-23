@@ -45,6 +45,7 @@ class WorkspaceController extends Controller
             $workspace = Workspace::create([
                 'name' => $validated['name'],
                 'slug' => $validated['slug'],
+                'type' => $validated['type'],
                 'owner_id' => Auth::id(),
             ]);
 

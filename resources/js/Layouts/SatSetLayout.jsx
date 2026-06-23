@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, router } from '@inertiajs/react';
 import { 
     LayoutGrid, Plus, Search, Settings, Users, LogOut, 
-    ChevronDown, Check, Clock, Bell, Calendar, MessageSquare, Layers, Sun, Moon
+    ChevronDown, Check, Clock, Bell, Calendar, MessageSquare, Layers, Sun, Moon, Lock
 } from 'lucide-react';
 import WorkspaceModal from '@/Components/Modals/WorkspaceModal';
 import ProjectModal from '@/Components/Modals/ProjectModal';
@@ -13,6 +13,8 @@ export default function SatSetLayout({ children, activeWorkspace, workspacesList
     const [isAddWorkspaceOpen, setIsAddWorkspaceOpen] = useState(false);
     const [isAddProjectOpen, setIsAddProjectOpen] = useState(false);
     const [isAddMemberOpen, setIsAddMemberOpen] = useState(false);
+    const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
+    const dropdownRef = React.useRef(null);
     
     const [isDarkMode, setIsDarkMode] = useState(() => {
         if (typeof window !== 'undefined') {
@@ -31,6 +33,16 @@ export default function SatSetLayout({ children, activeWorkspace, workspacesList
             localStorage.setItem('theme', 'light');
         }
     }, [isDarkMode]);
+
+    useEffect(() => {
+        function handleClickOutside(event) {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+                setIsUserDropdownOpen(false);
+            }
+        }
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, []);
 
     const toggleDarkMode = () => {
         setIsDarkMode(!isDarkMode);
@@ -53,7 +65,7 @@ export default function SatSetLayout({ children, activeWorkspace, workspacesList
         <div className="flex h-screen w-screen overflow-hidden bg-[#fafafa] dark:bg-zinc-950 font-sans text-zinc-900 dark:text-zinc-100 antialiased transition-colors duration-200">
             
             {/* 1. GLOBAL MINI SIDEBAR (FAR LEFT) */}
-            <div className="flex w-[70px] flex-col items-center justify-between border-r border-zinc-200 dark:border-zinc-800 bg-[#09090b] py-6 text-zinc-400">
+            <div className="flex w-[70px] flex-col items-center justify-between border-r border-zinc-200 dark:border-zinc-800 bg-indigo-500 py-6">
                 <div className="flex flex-col items-center gap-8 w-full">
                     {/* Brand Logo */}
                     <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-indigo-600 font-bold text-white shadow-lg shadow-indigo-600/30">
@@ -66,8 +78,8 @@ export default function SatSetLayout({ children, activeWorkspace, workspacesList
                             href={activeWorkspace ? route('workspace.dashboard', { workspace_slug: workspaceSlug }) : '#'} 
                             className={`group flex h-10 w-10 items-center justify-center rounded-lg transition-all ${
                                 window.location.pathname === `/w/${workspaceSlug}` || window.location.pathname.includes('/projects/')
-                                    ? 'text-indigo-400 bg-zinc-900/85' 
-                                    : 'hover:bg-zinc-900 hover:text-zinc-100'
+                                    ? 'text-indigo-600 bg-white font-bold shadow-sm' 
+                                    : 'text-white hover:bg-white/15 hover:text-white'
                             }`}
                             title="Dashboard"
                         >
@@ -78,8 +90,8 @@ export default function SatSetLayout({ children, activeWorkspace, workspacesList
                             href={activeWorkspace ? route('workspace.calendar', { workspace_slug: workspaceSlug }) : '#'} 
                             className={`flex h-10 w-10 items-center justify-center rounded-lg transition-all ${
                                 window.location.pathname.endsWith('/calendar')
-                                    ? 'text-indigo-400 bg-zinc-900/85' 
-                                    : 'hover:bg-zinc-900 hover:text-zinc-100'
+                                    ? 'text-indigo-600 bg-white font-bold shadow-sm' 
+                                    : 'text-white hover:bg-white/15 hover:text-white'
                             }`}
                             title="Calendar"
                         >
@@ -90,8 +102,8 @@ export default function SatSetLayout({ children, activeWorkspace, workspacesList
                             href={activeWorkspace ? route('workspace.members', { workspace_slug: workspaceSlug }) : '#'} 
                             className={`flex h-10 w-10 items-center justify-center rounded-lg transition-all ${
                                 window.location.pathname.endsWith('/members')
-                                    ? 'text-indigo-400 bg-zinc-900/85' 
-                                    : 'hover:bg-zinc-900 hover:text-zinc-100'
+                                    ? 'text-indigo-600 bg-white font-bold shadow-sm' 
+                                    : 'text-white hover:bg-white/15 hover:text-white'
                             }`}
                             title="Team Members"
                         >
@@ -102,8 +114,8 @@ export default function SatSetLayout({ children, activeWorkspace, workspacesList
                             href={activeWorkspace ? route('workspace.messages', { workspace_slug: workspaceSlug }) : '#'} 
                             className={`flex h-10 w-10 items-center justify-center rounded-lg transition-all ${
                                 window.location.pathname.endsWith('/messages')
-                                    ? 'text-indigo-400 bg-zinc-900/85' 
-                                    : 'hover:bg-zinc-900 hover:text-zinc-100'
+                                    ? 'text-indigo-600 bg-white font-bold shadow-sm' 
+                                    : 'text-white hover:bg-white/15 hover:text-white'
                             }`}
                             title="Messages"
                         >
@@ -112,21 +124,21 @@ export default function SatSetLayout({ children, activeWorkspace, workspacesList
                     </nav>
                 </div>
 
-                <div className="flex flex-col items-center gap-6 w-full">
+                <div className="flex flex-col items-center gap-6 w-full text-white">
                     {/* Dark Mode Toggle */}
                     <button 
                         onClick={toggleDarkMode}
-                        className="flex h-10 w-10 items-center justify-center rounded-lg transition-all hover:bg-zinc-900 hover:text-zinc-100"
+                        className="flex h-10 w-10 items-center justify-center rounded-lg transition-all hover:bg-white/15 hover:text-white"
                         title={isDarkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
                     >
                         {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
                     </button>
-                    <button className="flex h-10 w-10 items-center justify-center rounded-lg transition-all hover:bg-zinc-900 hover:text-zinc-100">
+                    <button className="flex h-10 w-10 items-center justify-center rounded-lg transition-all hover:bg-white/15 hover:text-white">
                         <Settings size={20} />
                     </button>
                     <button 
                         onClick={handleLogout} 
-                        className="flex h-10 w-10 items-center justify-center rounded-lg transition-all hover:bg-zinc-900 hover:text-red-450"
+                        className="flex h-10 w-10 items-center justify-center rounded-lg transition-all hover:bg-white/15 hover:text-red-200"
                     >
                         <LogOut size={20} />
                     </button>
@@ -213,14 +225,19 @@ export default function SatSetLayout({ children, activeWorkspace, workspacesList
                                     <Link
                                         key={project.id}
                                         href={route('projects.show', { workspace_slug: workspaceSlug, project: project.id })}
-                                        className={`flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm transition-colors ${
+                                        className={`flex items-center justify-between rounded-lg px-3 py-2 text-sm transition-colors ${
                                             isActive 
                                                 ? 'bg-indigo-600 font-semibold text-white shadow-sm' 
                                                 : 'text-zinc-650 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-900 hover:text-zinc-900 dark:hover:text-zinc-200'
                                         }`}
                                     >
-                                        <div className={`h-2 w-2 rounded-full ${isActive ? 'bg-white' : 'bg-indigo-500'}`} />
-                                        <span className="truncate">{project.name}</span>
+                                        <div className="flex items-center gap-2.5 overflow-hidden">
+                                            <div className={`h-2 w-2 flex-shrink-0 rounded-full ${isActive ? 'bg-white' : 'bg-indigo-500'}`} />
+                                            <span className="truncate">{project.name}</span>
+                                        </div>
+                                        {project.is_private && (
+                                            <Lock size={12} className={`flex-shrink-0 ml-1.5 ${isActive ? 'text-indigo-200' : 'text-zinc-400'}`} />
+                                        )}
                                     </Link>
                                 );
                             })}
@@ -302,11 +319,44 @@ export default function SatSetLayout({ children, activeWorkspace, workspacesList
                             <Settings size={20} />
                         </button>
                         <div className="h-5 w-[1px] bg-zinc-200 dark:bg-zinc-800" />
-                        <div className="flex items-center gap-3">
-                            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-indigo-100 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300 font-semibold text-xs">
-                                {auth.user.name.split(' ').map(n => n[0]).join('')}
-                            </div>
-                            <span className="text-sm font-semibold text-zinc-700 dark:text-zinc-300">{auth.user.name}</span>
+                        {/* User Profile Dropdown */}
+                        <div className="relative" ref={dropdownRef}>
+                            <button 
+                                onClick={() => setIsUserDropdownOpen(!isUserDropdownOpen)}
+                                className="flex items-center gap-2.5 hover:opacity-85 transition-opacity focus:outline-none"
+                            >
+                                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-indigo-100 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300 font-semibold text-xs border border-indigo-200 dark:border-indigo-900/40">
+                                    {auth.user.name.split(' ').map(n => n[0]).join('')}
+                                </div>
+                                <span className="text-sm font-semibold text-zinc-700 dark:text-zinc-300 hidden sm:inline">{auth.user.name}</span>
+                                <ChevronDown size={12} className="text-zinc-400" />
+                            </button>
+
+                            {/* Dropdown Card */}
+                            {isUserDropdownOpen && (
+                                <div className="absolute right-0 mt-2.5 w-56 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-2 shadow-lg shadow-zinc-250/10 dark:shadow-none z-50">
+                                    {/* User Details */}
+                                    <div className="px-3.5 py-2.5">
+                                        <p className="text-xs font-bold text-zinc-900 dark:text-zinc-50">{auth.user.name}</p>
+                                        <p className="text-[10px] text-zinc-400 dark:text-zinc-500 font-medium truncate mt-0.5">{auth.user.email}</p>
+                                    </div>
+                                    <div className="h-[1px] bg-zinc-150 dark:bg-zinc-800 my-1.5" />
+                                    
+                                    {/* Action Links */}
+                                    <Link 
+                                        href={route('profile.edit')}
+                                        className="flex w-full items-center gap-2 rounded-lg px-3.5 py-2 text-left text-xs font-bold text-zinc-650 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-850 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors"
+                                    >
+                                        Edit Profile
+                                    </Link>
+                                    <button 
+                                        onClick={handleLogout}
+                                        className="flex w-full items-center gap-2 rounded-lg px-3.5 py-2 text-left text-xs font-bold text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/25 transition-colors"
+                                    >
+                                        Log Out
+                                    </button>
+                                </div>
+                            )}
                         </div>
                     </div>
                 </header>

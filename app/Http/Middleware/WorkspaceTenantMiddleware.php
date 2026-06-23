@@ -43,8 +43,13 @@ class WorkspaceTenantMiddleware
         $joinedWorkspaces = $user->joinedWorkspaces()->get();
         $workspacesList = $ownedWorkspaces->merge($joinedWorkspaces)->unique('id')->values();
 
-        // Projects list inside active workspace
-        $projectsList = $workspace->projects()->get();
+        // Projects list inside active workspace (filter out private projects not owned by current user)
+        $projectsList = $workspace->projects()
+            ->where(function($query) use ($user) {
+                $query->where('is_private', false)
+                      ->orWhere('owner_id', $user->id);
+            })
+            ->get();
 
         // Workspace members list for assignment & sidebar
         $workspaceMembers = $workspace->members()->get();

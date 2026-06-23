@@ -16,6 +16,7 @@ class Workspace extends Model
     protected $fillable = [
         'name',
         'slug',
+        'type',
         'owner_id',
     ];
 

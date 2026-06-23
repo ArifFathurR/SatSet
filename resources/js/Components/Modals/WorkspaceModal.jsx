@@ -9,6 +9,7 @@ export default function WorkspaceModal({ isOpen, onClose }) {
     const { data, setData, post, processing, errors, reset } = useForm({
         name: '',
         slug: '',
+        type: 'software',
     });
 
     const handleSubmit = (e) => {
@@ -78,6 +79,46 @@ export default function WorkspaceModal({ isOpen, onClose }) {
                             />
                         </div>
                         {errors.slug && <span className="text-xs text-red-500 mt-1 block">{errors.slug}</span>}
+                    </div>
+
+                    <div>
+                        <label className="block text-xs font-bold text-zinc-500 dark:text-zinc-400 uppercase">Tipe Workspace</label>
+                        <div className="grid grid-cols-2 gap-3 mt-1.5">
+                            <label className={`flex flex-col p-3 rounded-lg border-2 cursor-pointer transition-all ${
+                                data.type === 'software' 
+                                    ? 'border-indigo-600 bg-indigo-50/15 dark:bg-indigo-950/20' 
+                                    : 'border-zinc-200 dark:border-zinc-800 hover:border-zinc-305 dark:hover:border-zinc-700 bg-white dark:bg-zinc-900'
+                            }`}>
+                                <input 
+                                    type="radio" 
+                                    name="type" 
+                                    value="software" 
+                                    checked={data.type === 'software'} 
+                                    onChange={(e) => setData('type', e.target.value)}
+                                    className="sr-only" 
+                                />
+                                <span className="text-xs font-bold text-zinc-900 dark:text-zinc-100">💻 Software Dev</span>
+                                <span className="text-[9px] text-zinc-400 dark:text-zinc-500 mt-1 leading-normal">5 Status: Baru, Rencana, Kerja, Testing, Selesai.</span>
+                            </label>
+                            
+                            <label className={`flex flex-col p-3 rounded-lg border-2 cursor-pointer transition-all ${
+                                data.type === 'casual' 
+                                    ? 'border-indigo-600 bg-indigo-50/15 dark:bg-indigo-950/20' 
+                                    : 'border-zinc-200 dark:border-zinc-800 hover:border-zinc-305 dark:hover:border-zinc-700 bg-white dark:bg-zinc-900'
+                            }`}>
+                                <input 
+                                    type="radio" 
+                                    name="type" 
+                                    value="casual" 
+                                    checked={data.type === 'casual'} 
+                                    onChange={(e) => setData('type', e.target.value)}
+                                    className="sr-only" 
+                                />
+                                <span className="text-xs font-bold text-zinc-900 dark:text-zinc-100">📝 Casual Work</span>
+                                <span className="text-[9px] text-zinc-400 dark:text-zinc-500 mt-1 leading-normal">3 Status: Rencana, Dikerjakan, Selesai. Cocok untuk log harian.</span>
+                            </label>
+                        </div>
+                        {errors.type && <span className="text-xs text-red-500 mt-1 block">{errors.type}</span>}
                     </div>
 
                     <div className="flex justify-end gap-3 mt-6">

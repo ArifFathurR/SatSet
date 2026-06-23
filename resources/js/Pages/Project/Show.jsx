@@ -9,6 +9,7 @@ import ProjectHeader from '@/Components/Project/ProjectHeader';
 import KanbanBoard, { COLUMNS } from '@/Components/Kanban/KanbanBoard';
 import ProjectOverview from '@/Components/Project/Overview';
 import ProjectReports from '@/Components/Project/Reports';
+import BoardSettingsModal from '@/Components/Modals/BoardSettingsModal';
 
 export default function ProjectShow({ workspace, projectsList, workspacesList, workspaceMembers, project, tasks: initialTasks, auth }) {
     const [tasks, setTasks] = useState(initialTasks);
@@ -16,7 +17,18 @@ export default function ProjectShow({ workspace, projectsList, workspacesList, w
     const [activeTab, setActiveTab] = useState('requests'); // overview, requests, reports, messages
     const [selectedTask, setSelectedTask] = useState(null);
     const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
-    const [addTaskStatus, setAddTaskStatus] = useState('backlog');
+    const [isBoardSettingsOpen, setIsBoardSettingsOpen] = useState(false);
+    const [addTaskStatus, setAddTaskStatus] = useState(workspace.type === 'casual' ? 'todo' : 'backlog');
+
+    const defaultColumns = workspace.type === 'casual'
+        ? [
+            { id: 'todo', name: 'Rencana', color: 'bg-amber-500 border-amber-500 text-amber-500' },
+            { id: 'progress', name: 'Dikerjakan', color: 'bg-indigo-500 border-indigo-500 text-indigo-500' },
+            { id: 'done', name: 'Selesai', color: 'bg-emerald-500 border-emerald-500 text-emerald-500' }
+          ]
+        : COLUMNS;
+
+    const activeColumns = project.custom_columns || defaultColumns;
 
     // Sync task state when props change
     useEffect(() => {
@@ -129,6 +141,7 @@ export default function ProjectShow({ workspace, projectsList, workspacesList, w
                 {/* 1. PROJECT DASHBOARD HEADER */}
                 <ProjectHeader 
                     projectName={project.name}
+                    isPrivate={project.is_private}
                     completionPercentage={completionPercentage}
                     workspaceMembers={workspaceMembers}
                     onAddMemberClick={() => router.get(route('workspace.members', { workspace_slug: workspace.slug }))}
@@ -136,6 +149,7 @@ export default function ProjectShow({ workspace, projectsList, workspacesList, w
                     setActiveTab={setActiveTab}
                     viewMode={viewMode}
                     setViewMode={setViewMode}
+                    onSettingsClick={() => setIsBoardSettingsOpen(true)}
                 />
 
                 {/* 2. TAB CONTENT PANELS */}
@@ -149,6 +163,7 @@ export default function ProjectShow({ workspace, projectsList, workspacesList, w
                                     onDragEnd={onDragEnd}
                                     onAddTaskClick={handleCreateTaskOpen}
                                     onTaskClick={handleOpenTask}
+                                    columns={activeColumns}
                                 />
                             )}
 
@@ -176,7 +191,7 @@ export default function ProjectShow({ workspace, projectsList, workspacesList, w
                                                         <td className="p-4 pl-6 font-bold text-zinc-900 dark:text-zinc-150">{task.title}</td>
                                                         <td className="p-4">
                                                             <span className="capitalize font-semibold text-xs px-2.5 py-1 rounded-full bg-zinc-100 dark:bg-zinc-800 text-zinc-800 dark:text-zinc-300">
-                                                                {COLUMNS.find(c => c.id === task.status)?.name || task.status}
+                                                                {activeColumns.find(c => c.id === task.status)?.name || task.status}
                                                             </span>
                                                         </td>
                                                         <td className="p-4">{renderPriorityBadge(task.priority)}</td>
@@ -206,7 +221,7 @@ export default function ProjectShow({ workspace, projectsList, workspacesList, w
                             {/* LIST VIEW */}
                             {viewMode === 'list' && (
                                 <div className="h-full w-full overflow-auto p-8 space-y-6">
-                                    {COLUMNS.map((column) => {
+                                    {activeColumns.map((column) => {
                                         const columnTasks = tasks.filter(t => t.status === column.id);
                                         return (
                                             <div key={column.id} className="space-y-2">
@@ -279,8 +294,18 @@ export default function ProjectShow({ workspace, projectsList, workspacesList, w
                         workspaceSlug={workspace.slug}
                         workspaceMembers={workspaceMembers}
                         defaultStatus={addTaskStatus}
+                        activeColumns={activeColumns}
                     />
                 )}
+
+                {/* Board Settings Modal */}
+                <BoardSettingsModal
+                    isOpen={isBoardSettingsOpen}
+                    onClose={() => setIsBoardSettingsOpen(false)}
+                    project={project}
+                    activeColumns={activeColumns}
+                    workspaceSlug={workspace.slug}
+                />
             </div>
         </SatSetLayout>
     );

@@ -72,11 +72,31 @@ class ProjectController extends Controller
             'workspace_id' => $workspace->id,
             'name' => $validated['name'],
             'description' => $validated['description'] ?? null,
+            'is_private' => $validated['is_private'] ?? false,
+            'owner_id' => auth()->id(),
         ]);
 
         return redirect()->route('projects.show', [
             'workspace_slug' => $workspace->slug,
             'project' => $project->id
         ])->with('success', 'Project created successfully.');
+    }
+
+    /**
+     * Update an existing project.
+     */
+    public function update(\App\Http\Requests\UpdateProjectRequest $request, $workspace_slug, Project $project)
+    {
+        $workspace = $request->attributes->get('workspace');
+        
+        if ($project->workspace_id !== $workspace->id) {
+            abort(404);
+        }
+
+        $validated = $request->validated();
+        
+        $project->update($validated);
+
+        return back()->with('success', 'Project updated successfully.');
     }
 }

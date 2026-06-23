@@ -10,11 +10,11 @@ const COLUMNS = [
     { id: 'done', name: 'Selesai', color: 'bg-emerald-500 border-emerald-500 text-emerald-500' }
 ];
 
-export default function KanbanBoard({ tasks, onDragEnd, onAddTaskClick, onTaskClick }) {
+export default function KanbanBoard({ tasks, onDragEnd, onAddTaskClick, onTaskClick, columns = COLUMNS }) {
     return (
         <DragDropContext onDragEnd={onDragEnd}>
             <div className="flex h-full w-full gap-5 overflow-x-auto p-8 items-start">
-                {COLUMNS.map((column) => {
+                {columns.map((column) => {
                     const columnTasks = tasks
                         .filter(task => task.status === column.id)
                         .sort((a, b) => a.position - b.position);
