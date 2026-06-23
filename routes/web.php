@@ -45,6 +45,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
         // Messages page
         Route::get('/messages', [WorkspaceController::class, 'messagesIndex'])->name('workspace.messages');
 
+        // Workspace Settings (owner only)
+        Route::get('/settings', [WorkspaceController::class, 'settingsIndex'])->name('workspace.settings');
+        Route::patch('/settings', [WorkspaceController::class, 'update'])->name('workspace.update');
+        Route::delete('/settings', [WorkspaceController::class, 'destroy'])->name('workspace.destroy');
+
         // Project routes
         Route::post('/projects', [ProjectController::class, 'store'])->name('projects.store');
         Route::get('/projects/{project}', [ProjectController::class, 'show'])->name('projects.show');

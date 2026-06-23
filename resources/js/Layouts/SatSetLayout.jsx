@@ -18,8 +18,9 @@ export default function SatSetLayout({ children, activeWorkspace, workspacesList
     
     const [isDarkMode, setIsDarkMode] = useState(() => {
         if (typeof window !== 'undefined') {
-            return localStorage.getItem('theme') === 'dark' || 
-                (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches);
+            // Only respect explicit user choice saved in localStorage.
+            // Browser/OS dark-mode preference is intentionally ignored.
+            return localStorage.getItem('theme') === 'dark';
         }
         return false;
     });
@@ -121,6 +122,21 @@ export default function SatSetLayout({ children, activeWorkspace, workspacesList
                         >
                             <MessageSquare size={20} />
                         </Link>
+
+                        {/* Workspace Settings — owner only */}
+                        {activeWorkspace && auth.user && activeWorkspace.owner_id == auth.user.id && (
+                            <Link 
+                                href={route('workspace.settings', { workspace_slug: workspaceSlug })}
+                                className={`flex h-10 w-10 items-center justify-center rounded-lg transition-all ${
+                                    window.location.pathname.endsWith('/settings')
+                                        ? 'text-indigo-600 bg-white font-bold shadow-sm' 
+                                        : 'text-white hover:bg-white/15 hover:text-white'
+                                }`}
+                                title="Pengaturan Workspace"
+                            >
+                                <Settings size={20} />
+                            </Link>
+                        )}
                     </nav>
                 </div>
 
@@ -315,9 +331,21 @@ export default function SatSetLayout({ children, activeWorkspace, workspacesList
                             <Bell size={20} />
                             <span className="absolute -right-0.5 -top-0.5 h-2 w-2 rounded-full bg-indigo-600" />
                         </button>
-                        <button className="text-zinc-500 hover:text-zinc-850 dark:hover:text-zinc-200 transition-colors">
-                            <Settings size={20} />
-                        </button>
+                        {activeWorkspace && auth.user && activeWorkspace.owner_id == auth.user.id ? (
+                            <Link
+                                href={route('workspace.settings', { workspace_slug: workspaceSlug })}
+                                className={`text-zinc-500 hover:text-zinc-850 dark:hover:text-zinc-200 transition-colors ${
+                                    window.location.pathname.endsWith('/settings') ? 'text-indigo-600' : ''
+                                }`}
+                                title="Pengaturan Workspace"
+                            >
+                                <Settings size={20} />
+                            </Link>
+                        ) : (
+                            <button className="text-zinc-500 hover:text-zinc-850 dark:hover:text-zinc-200 transition-colors opacity-40 cursor-not-allowed" title="Hanya Owner yang bisa mengakses pengaturan">
+                                <Settings size={20} />
+                            </button>
+                        )}
                         <div className="h-5 w-[1px] bg-zinc-200 dark:bg-zinc-800" />
                         {/* User Profile Dropdown */}
                         <div className="relative" ref={dropdownRef}>

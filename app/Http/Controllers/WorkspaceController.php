@@ -177,4 +177,66 @@ class WorkspaceController extends Controller
             'workspaceMembers' => $workspaceMembers,
         ]);
     }
+
+    /**
+     * Show workspace settings page (owner only).
+     */
+    public function settingsIndex(Request $request, $workspace_slug)
+    {
+        $workspace = $request->attributes->get('workspace');
+        $projects = $request->attributes->get('projects');
+        $workspaceMembers = $request->attributes->get('workspaceMembers');
+
+        // Only owner may access
+        if ($workspace->owner_id !== Auth::id()) {
+            abort(403, 'Only the workspace owner can access settings.');
+        }
+
+        return Inertia::render('Workspace/Settings', [
+            'workspace' => $workspace,
+            'projectsList' => $projects,
+            'workspaceMembers' => $workspaceMembers,
+        ]);
+    }
+
+    /**
+     * Update workspace details (owner only).
+     */
+    public function update(Request $request, $workspace_slug)
+    {
+        $workspace = $request->attributes->get('workspace');
+
+        if ($workspace->owner_id !== Auth::id()) {
+            abort(403, 'Only the workspace owner can update this workspace.');
+        }
+
+        $validated = $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'type' => ['required', 'string', 'in:software,casual'],
+        ]);
+
+        $workspace->update([
+            'name' => $validated['name'],
+            'type' => $validated['type'],
+        ]);
+
+        return back()->with('success', 'Workspace updated successfully.');
+    }
+
+    /**
+     * Delete workspace permanently (owner only).
+     */
+    public function destroy(Request $request, $workspace_slug)
+    {
+        $workspace = $request->attributes->get('workspace');
+
+        if ($workspace->owner_id !== Auth::id()) {
+            abort(403, 'Only the workspace owner can delete this workspace.');
+        }
+
+        $workspace->delete();
+
+        return redirect()->route('workspaces.index')
+            ->with('success', 'Workspace deleted successfully.');
+    }
 }
